@@ -1,5 +1,5 @@
-import { CKAN } from "../address-japan/CKAN.js";
-import { makeDirs } from "../address-japan/makeDirs.js";
+import { CKAN } from "https://code4fukui.github.io/address-japan/CKAN.js";
+import { makeDirs } from "https://code4fukui.github.io/address-japan/makeDirs.js";
 
 const list = await CKAN.listDatasetByGroup("g1-000304");
 //console.log(list);
