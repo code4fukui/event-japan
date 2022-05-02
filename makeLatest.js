@@ -29,6 +29,14 @@ for (const fn of fns) {
     }
   }
 }
+const nday = (d) => {
+  const day = d.開始日 || d.終了日;
+  if (!day) {
+    return 0;
+  }
+  return new Day(day).getDayOfGregorian();
+};
+list.sort((a, b) => nday(a) - nday(b));
 console.log(list.map(l => l.開始日 + " " + l.終了日 + " " + l.名称));
 await Deno.writeTextFile("data/event-latest.csv", CSV.stringify(list));
 
