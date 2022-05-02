@@ -10,11 +10,13 @@ const now = new Day();
 //console.log(now.isAfter(new Day("2021-01-02")));
 //Deno.exit(0);
 
+let nevent = 0;
 const fns = await dir2array("data/");
 for (const fn of fns) {
   const data = CSV.toJSON(await CSV.fetch("data/" + fn));
   
   for (const d of data) {
+    nevent++;
     //console.log(d);
     const dayend = d.終了日;
     const daystart = d.開始日;
@@ -38,5 +40,6 @@ const nday = (d) => {
 };
 list.sort((a, b) => nday(a) - nday(b));
 console.log(list.map(l => l.開始日 + " " + l.終了日 + " " + l.名称));
-await Deno.writeTextFile("data/event-latest.csv", CSV.stringify(list));
+console.log(list.length + " / " + nevent);
+await Deno.writeTextFile("data-latest/event-latest.csv", CSV.stringify(list));
 
