@@ -1,6 +1,6 @@
 # event-japan
  
-- [5/2時点で有効なイベントオープンデータ CSV](https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv)
+- [128データセット3699データ中、5/2時点で有効なイベントオープンデータ CSV 28件](https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv)
 
 ## 出展
 
