@@ -16,7 +16,7 @@ jobs:
           deno-version: v1.x
       - name: fetch
         run: |
-          deno run -A -r download.js
+          deno run -A download.js
           deno run -A makeLatest.js
       - name: commit and push
         run: |
