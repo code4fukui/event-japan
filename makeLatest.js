@@ -42,4 +42,3 @@ list.sort((a, b) => nday(a) - nday(b));
 console.log(list.map(l => l.開始日 + " " + l.終了日 + " " + l.名称));
 console.log(list.length + " / " + nevent);
 await Deno.writeTextFile("data-latest/event-latest.csv", CSV.stringify(list));
-
