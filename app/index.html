@@ -36,7 +36,7 @@ const jsonld2json = (ld) => {
   return list;
 };
 
-const datald = await (await fetch("../data-latest/event-latest.jsonld")).json();
+const datald = await (await fetch("https://code4fukui.github.io/event-japan/data-latest/event-latest.jsonld")).json();
 const data = jsonld2json(datald);
 for (const d of data) {
   const div = document.createElement("div");
