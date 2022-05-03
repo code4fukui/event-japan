@@ -1,0 +1,8 @@
+{
+  "@context": "https://code4fukui.github.io/LinkedDataset/LinkedDataset.jsonld",
+  "@type": "ld:LinkedDataset",
+  "ld:contextUrl": "event-schema.jsonld",
+  "schem:distribution": {
+    "schema:url": "event-latest.csv"
+  }
+}
