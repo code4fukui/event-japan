@@ -1,14 +1,20 @@
 
 <!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ）</title>
-<body>
+</head><body>
 
 <header>
 <h1>開催予定イベント情報</h1>
 <div><a href=https://registry-catalog.registries.digital.go.jp/dataset>ベース・レジストリ データカタログサイト</a>の<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>イベントオープンデータ</a>から開催予定のものを表示しています。</div>
 </header>
+
 <div id=main></div>
 
+<footer>
+APP: 開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ） by <a href=https://fukuno.jig.jp/3568>@taisukef</a> (<a href=https://code4fukui.github.io/>Code for FUKUI</a>) by MIT License (<a href=https://github.com/code4fukui/event-japan>src on GitHub</a>)<br>
+DATA: 出典：「<a href=https://registry-catalog.registries.digital.go.jp/dataset/>アドレス・ベース・レジストリ</a>（イベントデータ）」（デジタル庁）（<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304</a>）から<a href=https://github.com/code4fukui/event-japan/tree/main/data>全件ダウンロード</a>し、開催予定イベントデータを抽出し<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv>CSV</a>と<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.jsonld>JSON-LD</a>に加工<br>
+</footer>
+  
 <script type="module">
 const jsonld2json = (ld) => {
   const list = [];
@@ -31,7 +37,6 @@ const jsonld2json = (ld) => {
 };
 
 const datald = await (await fetch("../data-latest/event-latest.jsonld")).json();
-//data.sort((a, b) => parseInt(a.順位) - parseInt(b.順位));
 const data = jsonld2json(datald);
 for (const d of data) {
   const div = document.createElement("div");
@@ -105,11 +110,6 @@ footer a {
   color: white !important;
 }
 </style>
-
-<footer>
-APP: 開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ） by <a href=https://fukuno.jig.jp/3568>@taisukef</a> (<a href=https://code4fukui.github.io/>Code for FUKUI</a>) by MIT License (<a href=https://github.com/code4fukui/event-japan>src on GitHub</a>)<br>
-DATA: 出典：「<a href=https://registry-catalog.registries.digital.go.jp/dataset/>アドレス・ベース・レジストリ</a>（イベントデータ）」（デジタル庁）（<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304</a>）から<a href=https://github.com/code4fukui/event-japan/tree/main/data>全件ダウンロード</a>し、開催予定イベントデータを抽出し<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv>CSV</a>と<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.jsonld>JSON-LD</a>に加工<br>
-</footer>
 
 </body>
 </html>
