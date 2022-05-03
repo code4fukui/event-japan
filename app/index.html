@@ -1,0 +1,115 @@
+
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ）</title>
+<body>
+
+<header>
+<h1>開催予定イベント情報</h1>
+<div><a href=https://registry-catalog.registries.digital.go.jp/dataset>ベース・レジストリ データカタログサイト</a>の<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>イベントオープンデータ</a>から開催予定のものを表示しています。</div>
+</header>
+<div id=main></div>
+
+<script type="module">
+const jsonld2json = (ld) => {
+  const list = [];
+  for (const d of ld) {
+    const json = {};
+    for (const name in d) {
+      if (name.startsWith("@")) {
+        continue;
+      }
+      const n = name.indexOf(":");
+      if (n >= 0) {
+        json[name.substring(n + 1)] = d[name];
+      } else {
+        json[name] = d[name];
+      }
+    }
+    list.push(json);
+  }
+  return list;
+};
+
+const datald = await (await fetch("../data-latest/event-latest.jsonld")).json();
+//data.sort((a, b) => parseInt(a.順位) - parseInt(b.順位));
+const data = jsonld2json(datald);
+for (const d of data) {
+  const div = document.createElement("div");
+  console.log(d);
+  const price = d["料金(基本)"] ? `<div class=price>料金: ${d["料金(基本)"]}円</div>` : "";
+  div.innerHTML = `
+    <h2><a href=${d.URL}>${d.名称}</a> (${d.住所都道府県} ${d.住所市区町村 || ""})</h2>
+    <div class=type>イベント種類: ${d.イベント種類}</div>
+    <div class=date>開催日時: ${d.開始日 || d.終了日} 〜 ${d.終了日 || d.開始日}</div>
+    <div class=desc>${d.説明}</div>
+    ${price}
+    <div class=entry>申込方法: ${d.申込方法} (${d.連絡先名称})</div>
+  `;
+  main.appendChild(div);
+}
+</script>
+
+<style>
+body {
+  margin: 0;
+  background-color: #fee;
+}
+header {
+  background-color: #ee4747;
+  color: white;
+}
+header a {
+  color: white !important;
+  text-decoration: none;
+}
+header > div {
+  padding: .3em 1em;
+}
+h1 {
+  margin: 0;
+  padding: .3em;
+}
+img {
+  width: 30vw;
+  height: 18vw;
+  x-object-fit: contain;
+  object-fit: cover;
+}
+#main > div {
+  border: 1px solid black;
+  background-color: #f0f0f0;
+  margin: 1em;
+  padding: 0.5em;
+}
+#main .desc {
+  border: 1px solid black;
+  background-color: #fff;
+  font-size: 90%;
+  padding: 0.5em;
+  margin: .3em 0;
+}
+#main h2 {
+  padding: .1em 0;
+  margin: .1em 0;
+}
+#main a {
+  color: #333 !important;
+}
+footer {
+  margin-top: 1em;
+  padding: 1em;
+  background-color: #ee4747;
+  color: white;
+}
+footer a {
+  color: white !important;
+}
+</style>
+
+<footer>
+APP: 開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ） by <a href=https://fukuno.jig.jp/3568>@taisukef</a> by MIT License (<a href=https://github.com/code4fukui/event-japan>src on GitHub</a>)<br>
+DATA: 出典：「<a href=https://registry-catalog.registries.digital.go.jp/dataset/>アドレス・ベース・レジストリ</a>（イベントデータ）」（デジタル庁）（<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304</a>）から<a href=https://github.com/code4fukui/event-japan/tree/main/data>全件ダウンロード</a>し、開催予定イベントデータを抽出し<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv>CSV</a>と<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.jsonld>JSON-LD</a>に加工<br>
+</footer>
+
+</body>
+</html>
