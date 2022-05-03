@@ -12,7 +12,7 @@
 
 <footer>
 APP: 開催予定イベント情報（ベース・レジストリ データカタログサイト活用アプリ） by <a href=https://fukuno.jig.jp/3568>@taisukef</a> (<a href=https://code4fukui.github.io/>Code for FUKUI</a>) by MIT License (<a href=https://github.com/code4fukui/event-japan>src on GitHub</a>)<br>
-DATA: 出典：「<a href=https://registry-catalog.registries.digital.go.jp/dataset/>アドレス・ベース・レジストリ</a>（イベントデータ）」（デジタル庁）（<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304</a>）から<a href=https://github.com/code4fukui/event-japan/tree/main/data>全件ダウンロード</a>し、開催予定イベントデータを抽出し<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv>CSV</a>と<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.jsonld>JSON-LD</a>に加工<br>
+DATA: 出典：「<a href=https://registry-catalog.registries.digital.go.jp/dataset/>アドレス・ベース・レジストリ</a>（イベントデータ）」（デジタル庁）（<a href=https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304>https://registry-catalog.registries.digital.go.jp/dataset/?groups=g1-000304</a>）から<a href=https://github.com/code4fukui/event-japan/tree/main/data>全件ダウンロード</a>し、開催予定イベントデータを抽出し<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv>CSV</a>/<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.jsonld>JSON-LD</a>/<a href=https://github.com/code4fukui/event-japan/blob/main/data-latest/event-latest.csv.jsonld>LinkedCSV</a>に加工<br>
 </footer>
   
 <script type="module">
@@ -36,10 +36,28 @@ const jsonld2json = (ld) => {
   return list;
 };
 
-const url = "https://code4fukui.github.io/event-japan/data-latest/event-latest.jsonld";
-//const url = "../data-latest/event-latest.jsonld";
-const datald = await (await fetch(url)).json();
-const data = jsonld2json(datald);
+const fetchJSONLD = async () => {
+  const url = "https://code4fukui.github.io/event-japan/data-latest/event-latest.jsonld";
+  //const url = "../data-latest/event-latest.jsonld";
+  const datald = await (await fetch(url)).json();
+  const data = jsonld2json(datald);
+  return data;
+};
+const fetchLinkedCSV = async () => {
+  const baseurl = "https://code4fukui.github.io/event-japan/data-latest/";
+  //const baseurl = "../data-latest/";
+  const url = baseurl + "event-latest.csv.jsonld";
+  const datald = await (await fetch(url)).json();
+  console.log("skip contextUrl: " + baseurl + datald["LinkedCSV:contextUrl"]);
+  const url2 = datald["schema:distribution"]["schema:url"];
+  const { CSV } = await import("https://js.sabae.cc/CSV.js");
+  const data = CSV.toJSON(await CSV.fetch(baseurl + url2));
+  return data;
+};
+
+const linkedcsv = true;
+const data = linkedcsv ? await fetchLinkedCSV() : await fetchJSONLD();
+
 for (const d of data) {
   const div = document.createElement("div");
   console.log(d);
